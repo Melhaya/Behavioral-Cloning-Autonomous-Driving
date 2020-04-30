@@ -73,19 +73,17 @@ For details about how I created the training data, see the next section.
 
 #### 1. Solution Design Approach
 
-The overall strategy for deriving a model architecture was to ...
+The overall strategy for deriving a model architecture was to find an architecture that would help the model extract the correct features from the input images and be able to assign and learn the steering angle that should be taken based on that image/frame.
 
-My first step was to use a convolution neural network model similar to the ... I thought this model might be appropriate because ...
+My first step was to use a simple convolution neural network model of just one layer and two fully-connected layers. I tried it as an initial experement to see if my data preprocessing is working fine as well as the input to the model. As expected the output was horrible as the car drifted quickly out of the road and into the lake! Luckily it is just a simulator :D
 
 In order to gauge how well the model was working, I split my image and steering angle data into a training and validation set. I found that my first model had a low mean squared error on the training set but a high mean squared error on the validation set. This implied that the model was overfitting. 
 
-To combat the overfitting, I modified the model so that ...
+To combat the overfitting, I modified the my dataset so that I could have more of it and to vary it as well. I started by taking the other camera angles as input as well and then I flipped all those images horizontally.
 
-Then I ... 
+Then I used the model architecture mentioned in the next section as my main and final model. The mse was low for both training and validation. 
 
-The final step was to run the simulator to see how well the car was driving around track one. There were a few spots where the vehicle fell off the track... to improve the driving behavior in these cases, I ....
-
-At the end of the process, the vehicle is able to drive autonomously around the track without leaving the road.
+The final step was to run the simulator to see how well the car was driving around track one. The vehicle is able to drive autonomously around the track without leaving the road. Mission accomplished! :D
 
 #### 2. Final Model Architecture
 
@@ -128,28 +126,12 @@ _________________________________________________________________
 
 #### 3. Creation of the Training Set & Training Process
 
-To capture good driving behavior, I first recorded two laps on track one using center lane driving. Here is an example image of center lane driving:
+To capture good driving behavior, I first recorded two laps on track one using center lane driving. I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to return back to the center of the lane in case in drifted outside of the center.
 
-![alt text][image2]
+To augment the data sat, I also flipped images and angles thinking that this would help generalize the model better.
 
-I then recorded the vehicle recovering from the left side and right sides of the road back to center so that the vehicle would learn to .... These images show what a recovery looks like starting from ... :
+After the collection process, I then preprocessed this data by normalizing them and to be between -0.5 and 0.5 implying a 0 mean.
 
-![alt text][image3]
-![alt text][image4]
-![alt text][image5]
+I finally randomly shuffled the data set and put 20% of the data into a validation set. 
 
-Then I repeated this process on track two in order to get more data points.
-
-To augment the data sat, I also flipped images and angles thinking that this would ... For example, here is an image that has then been flipped:
-
-![alt text][image6]
-![alt text][image7]
-
-Etc ....
-
-After the collection process, I had X number of data points. I then preprocessed this data by ...
-
-
-I finally randomly shuffled the data set and put Y% of the data into a validation set. 
-
-I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was Z as evidenced by ... I used an adam optimizer so that manually training the learning rate wasn't necessary.
+I used this training data for training the model. The validation set helped determine if the model was over or under fitting. The ideal number of epochs was 10 as evidenced by the continious decrease of the validation loss. I used an adam optimizer so that manually training the learning rate wasn't necessary.
